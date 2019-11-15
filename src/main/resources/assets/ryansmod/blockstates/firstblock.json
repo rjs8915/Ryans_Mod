@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "facing=north": { "model": "ryansmod:block/firstblock" },
+    "facing=south": { "model": "ryansmod:block/firstblock", "y": 180 },
+    "facing=west": { "model": "ryansmod:block/firstblock", "y": 270 },
+    "facing=east": { "model": "ryansmod:block/firstblock", "y": 90 },
+    "facing=up": { "model": "ryansmod:block/firstblock", "x": -90 },
+    "facing=down": { "model": "ryansmod:block/firstblock", "x": 90 }
+  }
+}
