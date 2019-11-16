@@ -1,6 +1,7 @@
 package com.RyanXLVI.ryansmod;
 
 import com.RyanXLVI.ryansmod.blocks.FirstBlock;
+import com.RyanXLVI.ryansmod.blocks.FirstBlockContainer;
 import com.RyanXLVI.ryansmod.blocks.FirstBlockTile;
 import com.RyanXLVI.ryansmod.blocks.ModBlocks;
 import com.RyanXLVI.ryansmod.items.FirstItem;
@@ -8,10 +9,14 @@ import com.RyanXLVI.ryansmod.setup.ClientProxy;
 import com.RyanXLVI.ryansmod.setup.IProxy;
 import com.RyanXLVI.ryansmod.setup.ModSetup;
 import com.RyanXLVI.ryansmod.setup.ServerProxy;
+import com.sun.javafx.scene.control.behavior.SpinnerBehavior;
 import net.minecraft.block.Block;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -25,6 +30,8 @@ import org.apache.logging.log4j.Logger;
 @Mod("ryansmod")
 public class ryansmod
 {
+    public static final String MODID = "ryansmod";
+
     public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
 
     public static ModSetup setup = new ModSetup();
@@ -65,6 +72,16 @@ public class ryansmod
         @SubscribeEvent
         public static void onTileEntityRegistry(final RegistryEvent.Register<TileEntityType<?>> event) {
             event.getRegistry().register(TileEntityType.Builder.create(FirstBlockTile::new, ModBlocks.FIRSTBLOCK).build(null).setRegistryName("firstblock"));
+        }
+
+        @SubscribeEvent
+        public static void onContainerRegistry(final RegistryEvent.Register<ContainerType<?>> event) {
+            event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
+                BlockPos pos = data.readBlockPos();
+                return new FirstBlockContainer(windowId,
+                        ryansmod.proxy.getClientWorld(), pos, inv,
+                        ryansmod.proxy.getClientPlayer());
+            }).setRegistryName("firstblock"));
         }
     }
 }
